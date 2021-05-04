@@ -13,7 +13,10 @@ int visited = 0;
 
 int main()
 {
-    srand(time(NULL));
+    int seed;
+    cout << "enter seed: ";
+    cin >> seed;
+    srand(seed);
     for(int i = 0; i < 10; i++){
         for(int j = 0; j < 25; j++){
             rooms[i][j].setCol(j);
@@ -22,9 +25,16 @@ int main()
     }
     drunkenWalk(0,0);
     
-    std::cout << "Hello World!";
+    // std::cout << "Hello World!";
 
     Room::encodeToFile(rooms, 10, 25);
+
+    int *foo = Room::decode('a');
+    cout << dec << "1: " << foo[0] << endl;
+    cout << "2: " << foo[1] << endl;
+    cout << "3: " << foo[2] << endl;
+    cout << "4: " << foo[3] << endl;
+
     return 0;
 }
 
@@ -48,8 +58,8 @@ void drunkenWalk(int row, int col){
     r->setVisited(1);
     // std::cout << "Visited: " << r->getVisited() << "\n";
     int dirs[4] = {0,1,2,3}; // East, West, South, North = 0,1,2,3
-    int dir_offsetrow[4] = {-1, 0, 1, 0};
-    int dir_offsetcol[4] = {0, 1, 0, -1};
+    int dir_offsetrow[4] = {0, 0, 1, -1};
+    int dir_offsetcol[4] = {1, -1, 0, 0};
     shuffle_array(&dirs[0], &dirs[3]);
     // std::cout <<"Confirm random order: ";
     // std::cout << dirs[0] << dirs[1] << dirs[2] << dirs[3] << "\n";
@@ -64,7 +74,7 @@ void drunkenWalk(int row, int col){
             
             // std::cout << "Visited Neighbor: " << neighbor->getVisited() << "\n";
             if(neighbor->getVisited() == 0){
-                std::cout << "recurse" << "\n";
+                // std::cout << "recurse" << "\n";
                 r->changeWall(dir, 2);
                 drunkenWalk(neighbor->getRow(), neighbor->getCol());
             }

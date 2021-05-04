@@ -1,29 +1,12 @@
-#include <math.h>
-#include <fstream>
+#ifndef ROOM_H
+#define ROOM_H
 
 class Room{
     public:
-        Room(){
-            row = 0;
-            col = 0;
-        }
-
-        Room(int walls[4]){
-            for(int i = 0; i < 4; i++){
-                this->walls[i] = walls[i];
-            }
-        }
+        Room();
+        Room(int walls[4]);
         //create room from encoded int
-        Room(int encode){
-            for(int i = 0; i < 4; i++){
-                int num = pow(2, (3-i));
-                if((encode & num) != 0){
-                    walls[i] = 1;
-                }else{
-                    walls[i] = 2;
-                }
-            }
-        }
+        Room(int encode);
         
         int getVisited(){
             return visited;
@@ -50,40 +33,11 @@ class Room{
             this->col = col;
         }
 
-        int encode(){
-            int encode = 0;
-            for(int i = 0; i < 4; i++){
-                if(walls[i] != 2){
-                    encode += pow(2,(3-i)) * walls[i];
-                }
-            }
-            return encode;
-        }
+        int encode();
 
-        static void encodeToFile(Room rooms[10][25], int size1, int size2){
-            std::ofstream myfile;
-            myfile.open("maze.txt");
-            myfile << hex;
-            for(int i = 0; i < size1; i ++){
-                for(int j = 0; j < size2; j++){
-                    myfile << rooms[i][j].encode();
-                }
-            }
-            myfile.close();
-        }
+        static void encodeToFile(Room rooms[10][25], int size1, int size2);
 
-        // int * decode(int encode){
-        //     int nums[4];
-        //     for(int i = 0; i < 4; i++){
-        //         int num = pow(2, (3-i));
-        //         if(encode & num != 0){
-        //             nums[i] = 1;
-        //         }else{
-        //             nums[i] = 2;
-        //         }
-        //     }
-        //     return nums;
-        // }
+        static int * decode(char hex);
         
     private:
     //opening is 2 wall is 1 uninitialized is 0
@@ -92,3 +46,5 @@ class Room{
         int col;
         int visited = 0;
 };
+
+#endif
